@@ -89,18 +89,13 @@ def dot(u, v):
 def cross(u, v):
     return (u.y*v.z - u.z*v.y) + (u.z*v.x - u.x*v.z) + (u.x*v.y - u.y*v.x)
 
-def compute_image(eye):
-    pass
-
-def setup_canvas(vp, color):
+def setup_png_canvas(vp):
     canvas = pnglib.PNGCanvas(vp.width, vp.height) 
-    canvas.color = color
+    canvas.color = [0xff, 0, 0xff, 0xff]
     canvas.filledRectangle(0, 0, vp.width-1, vp.height-1)
     return canvas
     
 def radiance(ray, spheres, sr):
-    sr.tmin = 10000.0
-
     hit = False 
     sr.tmin = 10000.0 
 
@@ -114,13 +109,6 @@ def radiance(ray, spheres, sr):
         pixel = Vector(0, 1, 1) 
 
     return pixel
-    """
-    for sphere in spheres:
-        if sphere.hit(ray, 0, sr) and sr.t > sr.tmin:
-            sr.tmin = sr.t
-            return sphere.color
-    return Vector(0, 1, 1) 
-    """
 
 def write_pixel_at(x, y, pixel, canvas):
     r = int(255*pixel.x)
@@ -138,7 +126,7 @@ def give_spheres_random_colors(spheres):
 def main():
      
     vp     = ViewPlane()
-    canvas = setup_canvas(vp, gPngColors["error-color"])
+    canvas = setup_png_canvas(vp)
    
     camRay = Ray((0,0,200), (0,0,-1))
     sr     = ShadeRecord()
